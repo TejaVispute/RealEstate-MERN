@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice"
 const SignIn = () => {
-    const naigate = useNavigate()
+    const naigate = useNavigate();
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({})
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false)
+    const { loading, error } = useSelector((state) => state.user)
     // saving form data
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value })
@@ -13,7 +15,7 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            setLoading(true);
+            dispatch(signInStart())
             const res = await fetch('/api/auth/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }, // Corrected header name
@@ -24,17 +26,14 @@ const SignIn = () => {
             console.log(data)
 
             if (data.success == false) {
-                setLoading(false)
-                setError(data.message);
+                dispatch(signInFailure(data.message))
 
                 return;
             }
-            setLoading(false)
-            setError(null);
+            dispatch(signInSuccess(data))
             naigate("/")
         } catch (error) {
-            setLoading(false)
-            console.log(error.message);
+            dispatch(signInFailure(data.message))
         }
 
 
@@ -63,7 +62,7 @@ const SignIn = () => {
                     <span className='text-blue-700'>sign up</span>
                 </Link>
             </div>
-            <p className='text-red-600 font-bold'>
+            <p className='text-red-600 font-bold text-center'>
                 {error}
             </p>
         </div>
