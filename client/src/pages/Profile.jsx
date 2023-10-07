@@ -9,10 +9,10 @@ const Profile = () => {
     const [filePercentage, setFilePercentage] = useState(0);
     const [fileUploadError, setFileUploadError] = useState(false)
     const [formData, setFormData] = useState({})
-
+    console.log(formData)
 
     const { currentUser } = useSelector((state) => state.user);
-    // console.log(currentUser)
+
 
 
 
