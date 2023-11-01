@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../firebase.js";
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserFailure, signOutUserSuccess } from "../redux/user/userSlice.js";
+import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux";
 const Profile = () => {
     const fileRef = useRef(null);
@@ -147,6 +148,8 @@ const Profile = () => {
                         loading ? "Loading..." : "Update"
                     }
                 </button>
+
+                <Link className="p-3 rounded-lg bg-green-600 text-white font-bold text-center uppercase hover:opacity-95" to="/create-listing">Create Listing</Link>
             </form>
 
             <div className="flex justify-between mt-5 font-bold">
