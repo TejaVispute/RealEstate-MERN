@@ -5,6 +5,8 @@ import { app } from "../firebase.js";
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserFailure, signOutUserSuccess } from "../redux/user/userSlice.js";
 import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux";
+
+
 const Profile = () => {
     const fileRef = useRef(null);
     const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -13,6 +15,8 @@ const Profile = () => {
     const [fileError, setFileError] = useState(false);
     const [formData, setFormData] = useState({});
     const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [showlistingError, setShowlistingError] = useState(false);
+    const [listing, setListing] = useState([])
     const dispatch = useDispatch()
 
 
@@ -45,10 +49,14 @@ const Profile = () => {
         }
     }, [file])
 
+
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
 
+
+    // for updating user in DB
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -76,7 +84,7 @@ const Profile = () => {
     }
 
 
-    // for deleting user 
+    // for deleting user from database 
 
     const handleDeleteUser = async () => {
 
@@ -100,6 +108,8 @@ const Profile = () => {
         }
     }
 
+
+    // For signing out user
     const handleSignout = async () => {
         try {
             dispatch(signOutUserStart())
@@ -112,6 +122,26 @@ const Profile = () => {
             dispatch(signOutUserSuccess(data))
         } catch (error) {
             dispatch(signOutUserFailure(data.message))
+        }
+    }
+
+
+
+    // fetch perticular user listings
+
+    const showListing = async () => {
+        try {
+            setShowlistingError(false)
+            const res = await fetch(`api/user/getlisting/${currentUser._id}`);
+            const data = await res.json();
+            // console.log(data)
+            if (data.success === false) {
+                setShowlistingError(true)
+                return;
+            }
+            setListing(data)
+        } catch (error) {
+            setShowlistingError(true)
         }
     }
 
@@ -169,6 +199,34 @@ const Profile = () => {
                     updateSuccess ? "User is updated successfully!" : ""
                 }
             </p>
+
+            <button onClick={() => showListing()} className="text-green-700 w-full text-center font-bold mt-3">Show listing</button>
+            <p className="text-center font-bold text-red-700">
+                {
+                    showlistingError ? "Error While Showing Listing" : ""
+                }
+            </p>
+
+            {
+                listing && listing.length > 0 &&
+
+                listing.map((listing, i) => (
+                    <div key={i} className="flex justify-between items-center border-2 shadow-sm rounded-lg mt-3 p-3 gap-4 " >
+                        <Link to={`/listing/${listing._id}`}>
+                            <img src={listing.imageUrls[0]} alt="Listing cover photo" className="object-contain h-16 w-16" />
+                        </Link>
+
+                        <Link to={`/listing/${listing._id}`} className="text-slate-700 font-semibold hover:underline flex-1 truncate">
+                            <p className="text-sm md:text-md" >  {listing.name}</p>
+                        </Link>
+
+                        <div className="flex gap-1">
+                            <button className="bg-slate-600 md:p-3 p-2 rounded-lg text-white">Edit</button>
+                            <button className="bg-red-600 md:p-3 p-2 rounded-lg text-white">Delete</button>
+                        </div>
+                    </div>
+                ))
+            }
         </div>
     )
 }
