@@ -145,6 +145,27 @@ const Profile = () => {
         }
     }
 
+    // Delete listing
+
+    const handleListingDelete = async (id) => {
+        // console.log(id)
+        try {
+            const res = await fetch(`api/listing/delete/${id}`, {
+                method: 'DELETE',
+
+            })
+            const data = await res.json();
+            if (data.success === false) {
+                console.log(data.message)
+                return;
+            }
+            // if(!res) return 
+            setListing((prev) => prev.filter((listing) => listing._id != id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return (
         <div className="p-3 max-w-lg mx-auto">
@@ -222,7 +243,7 @@ const Profile = () => {
 
                         <div className="flex gap-1">
                             <button className="bg-slate-600 md:p-3 p-2 rounded-lg text-white">Edit</button>
-                            <button className="bg-red-600 md:p-3 p-2 rounded-lg text-white">Delete</button>
+                            <button onClick={() => handleListingDelete(listing._id)} className="bg-red-600 md:p-3 p-2 rounded-lg text-white">Delete</button>
                         </div>
                     </div>
                 ))
