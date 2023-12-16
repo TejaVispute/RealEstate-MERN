@@ -242,7 +242,9 @@ const Profile = () => {
                         </Link>
 
                         <div className="flex gap-1">
-                            <button className="bg-slate-600 md:p-3 p-2 rounded-lg text-white">Edit</button>
+                            <Link to={`/update-listing/${listing._id}`}>
+                                <button className="bg-slate-600 md:p-3 p-2 rounded-lg text-white">Edit</button>
+                            </Link>
                             <button onClick={() => handleListingDelete(listing._id)} className="bg-red-600 md:p-3 p-2 rounded-lg text-white">Delete</button>
                         </div>
                     </div>
