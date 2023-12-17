@@ -56,7 +56,7 @@ export const updateListing = async (req, res, next) => {
 
 
 export const getListing = async (req, res, next) => {
-    console.log(req.params.id);
+    // console.log(req.params.id);
     try {
         const listing = await Listing.findById(req.params.id);
 

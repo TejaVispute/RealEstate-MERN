@@ -4,17 +4,21 @@ import { useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
+import { useSelector } from 'react-redux';
 import "swiper/css/bundle";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoBedOutline } from "react-icons/io5";
 import { LuBath } from "react-icons/lu";
 import { LuParkingCircle } from "react-icons/lu";
 import { TbSofa } from "react-icons/tb";
+import Contact from '../components/Contact';
 
 const Listing = () => {
     SwiperCore.use([Navigation]);
     const [listing, setListing] = useState(null);
-    console.log(listing);
+    // console.log(listing);
+    const { currentUser } = useSelector((state) => state.user);
+    const [contact, setContact] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const params = useParams()
@@ -71,7 +75,7 @@ const Listing = () => {
                         </Swiper>
 
                         {/* All Listing  */}
-                        <div className='py-[2vw] px-[5vw]'>
+                        <div className='max-w-4xl mx-auto mt-5 mb-5'>
 
                             <div>
                                 <h1 className='font-bold text-4xl '>{listing.name}</h1>
@@ -119,6 +123,19 @@ const Listing = () => {
                                     <TbSofa className='text-xl' /> Furnished {listing.furnished}
                                 </div>
                             </div>
+
+                            {/* bottom button */}
+
+                            {
+                                currentUser && listing.userRef !== currentUser._id && !contact && (
+                                    <div className='mt-5 '>
+                                        <button onClick={() => setContact(true)} className='bg-slate-700 text-white uppercase rounded-md hover:opacity-95 p-2 py-4 font-bold w-full'>Contact Landlord</button>
+                                    </div>
+                                )
+                            }
+
+                            {contact && <Contact listing={listing} />}
+
 
                         </div>
                     </>
