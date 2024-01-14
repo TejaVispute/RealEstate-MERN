@@ -133,6 +133,7 @@ export const getListings = async (req, res, next) => {
     try {
         // Parse and set default values for pagination
         const limit = parseInt(req.query.limit) || 6;
+        console.log(limit);
         const startIndex = parseInt(req.query.startIndex) || 0;
 
         // Parse and handle query parameters
