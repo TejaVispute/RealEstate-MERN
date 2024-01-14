@@ -201,8 +201,8 @@ const UpdateListing = () => {
 
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex gap-2'>
-                            <input type="checkbox" id='sell' className='w-5' onChange={handleChange} checked={formData.type === "sell"} />
-                            <span>Sell</span>
+                            <input type="checkbox" id='sale' className='w-5' onChange={handleChange} checked={formData.type === "sale"} />
+                            <span>sale</span>
                         </div>
                         <div className='flex gap-2'>
                             <input type="checkbox" id='rent' className='w-5' onChange={handleChange} checked={formData.type === "rent"} />

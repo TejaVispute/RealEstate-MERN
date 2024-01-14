@@ -132,7 +132,7 @@ export const getListings = async (req, res, next) => {
 
     try {
         // Parse and set default values for pagination
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 6;
         const startIndex = parseInt(req.query.startIndex) || 0;
 
         // Parse and handle query parameters
@@ -161,6 +161,8 @@ export const getListings = async (req, res, next) => {
         let order = req.query.order || "desc";
 
         // Build the query object based on parameters
+
+
         const query = {
             name: { $regex: searchTerm, $options: "i" },
             offer,
@@ -168,6 +170,8 @@ export const getListings = async (req, res, next) => {
             parking,
             type,
         };
+
+        console.log(query);
 
         // Find listings according to the query
         const listings = await Listing.find(query)
