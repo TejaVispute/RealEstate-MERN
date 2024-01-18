@@ -54,7 +54,7 @@ const Search = () => {
       setLoading(true);
       setShowMore(false);
       const searchQuery = urlParams.toString();
-      console.log(searchQuery);
+      // console.log(searchQuery);
       const res = await fetch(`/api/listing/getListings?${searchQuery}`);
       const data = await res.json();
       if (data.length > 5) {
